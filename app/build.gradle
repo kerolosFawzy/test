@@ -3,6 +3,9 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.massive.popmovie"
         minSdkVersion 17
@@ -11,9 +14,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    dataBinding {
-        enabled = true
-    }
+
     buildTypes {
         release {
             minifyEnabled false

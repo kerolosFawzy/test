@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,7 +39,6 @@ public class GridFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.grid_fragment, container, false);
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.GridRecyclerView);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mcontext, 2);
         mRecyclerView.setLayoutManager(layoutManager);

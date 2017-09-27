@@ -6,5 +6,5 @@ import java.util.ArrayList;
 
 public interface ResponseCallBack {
 
-    public void OnSuccess(ArrayList<Movie> message);
+    public void OnSuccess(Movie message);
 }

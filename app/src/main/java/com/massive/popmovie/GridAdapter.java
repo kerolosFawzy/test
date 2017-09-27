@@ -2,6 +2,10 @@ package com.massive.popmovie;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.massive.popmovie.Interfaces.ResponseCallBack;
 import com.massive.popmovie.Utlis.Constant;
 import com.massive.popmovie.model.Movie;
+import com.massive.popmovie.view.fragment.DetailFragment;
 
 import java.util.ArrayList;
 
@@ -61,8 +66,8 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList myMovie = mMovie.get(position).getMovies();
-                callBack.OnSuccess(myMovie);
+                Movie movie= mMovie.get(position);
+                callBack.OnSuccess(mMovie.get(position));
             }
         });
     }
@@ -75,5 +80,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     private Movie getItem(int adapterPosition) {
         return mMovie.get(adapterPosition);
     }
+
+
 
 }

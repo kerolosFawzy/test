@@ -10,28 +10,27 @@ import android.view.ViewGroup;
 
 import com.massive.popmovie.Interfaces.ResponseCallBack;
 import com.massive.popmovie.R;
+import com.massive.popmovie.Utlis.Constant;
+import com.massive.popmovie.databinding.DetialFragmentBinding;
 import com.massive.popmovie.model.Movie;
 
 import java.util.ArrayList;
 
-/**
- * Created by minafaw on 9/27/2017.
- */
-
 public class DetailFragment extends Fragment implements ResponseCallBack {
-    ArrayList<Movie> movies;
+    Movie movies;
+    String url = Constant.POSTER_URL + movies.getPoster_path();
+    DetialFragmentBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = DataBindingUtil.inflate(inflater, R.layout.detial_fragment, container, false).getRoot();
-//        FragmentMainBinding  binding;
-//        binding = DataBindingUtil.inflate(inflater, R.layout.detial_fragment, container, false);
-        return view;
+        binding = DataBindingUtil.inflate(inflater, R.layout.detial_fragment, container, false);
+        binding.setMovie(movies);
+        return binding.getRoot();
     }
 
     @Override
-    public void OnSuccess(ArrayList<Movie> message) {
+    public void OnSuccess(Movie message) {
         this.movies = message;
     }
 }

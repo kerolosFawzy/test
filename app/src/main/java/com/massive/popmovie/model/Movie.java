@@ -17,7 +17,7 @@ public class Movie extends BaseObservable implements Serializable {
     private String title;
     private String backdrop_path;
     private double vote_average;
-    private ArrayList<Movie> movies;
+    private Movie movies;
 
     @Bindable
     public String getPoster_path() {
@@ -60,12 +60,12 @@ public class Movie extends BaseObservable implements Serializable {
     }
 
     @Bindable
-    public ArrayList<Movie> getMovies() {
+    public Movie getMovies() {
         return movies;
     }
 
     @Bindable
-    public void setMovies(ArrayList<Movie> movies) {
+    public void setMovies(Movie movies) {
         this.movies = movies;
     }
 
