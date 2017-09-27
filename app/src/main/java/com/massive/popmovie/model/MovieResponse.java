@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public class MovieResponse {
+
     @SerializedName("page")
     private int page;
     @SerializedName("results")

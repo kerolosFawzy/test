@@ -1,4 +1,4 @@
-package com.massive.popmovie;
+package com.massive.popmovie.Interfaces;
 
 import com.massive.popmovie.model.Movie;
 import com.massive.popmovie.model.MovieResponse;
@@ -13,6 +13,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MovieApi {
+
     @GET("discover/movie")
     Call<MovieResponse> getMovies(@Query("api_key") String apiKey);
 

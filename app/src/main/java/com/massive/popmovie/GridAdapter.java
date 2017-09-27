@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.massive.popmovie.Interfaces.ResponseCallBack;
 import com.massive.popmovie.Utlis.Constant;
 import com.massive.popmovie.model.Movie;
 
@@ -23,25 +24,20 @@ import java.util.ArrayList;
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     private ArrayList<Movie> mMovie;
-    private static Context mContext;
+    private ResponseCallBack callBack;
+    private Context mContext;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.ivMoviePoster);
+            imageView = itemView.findViewById(R.id.ivMoviePoster);
+
         }
 
 
-        @Override
-        public void onClick(View view) {
-//            Movie movie=getItem(getAdapterPosition());
-//            this.postItemListener.onPostClick(movie.getId());
-//            notifyDataSetChanged();
-            Toast.makeText(mContext, "hi", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public GridAdapter(Context mcontext, ArrayList<Movie> arrayList) {
@@ -57,10 +53,18 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(GridAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(GridAdapter.ViewHolder holder, final int position) {
         Glide.with(mContext)
                 .load(Constant.POSTER_URL + mMovie.get(position).getPoster_path())
                 .into(holder.imageView);
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList myMovie = mMovie.get(position).getMovies();
+                callBack.OnSuccess(myMovie);
+            }
+        });
     }
 
     @Override
