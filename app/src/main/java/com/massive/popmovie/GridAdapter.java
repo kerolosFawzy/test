@@ -32,22 +32,12 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     private ResponseCallBack callBack;
     private Context mContext;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ImageView imageView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.ivMoviePoster);
-
-        }
 
 
-    }
-
-    public GridAdapter(Context mcontext, ArrayList<Movie> arrayList) {
+    public GridAdapter(Context mcontext, ArrayList<Movie> arrayList , ResponseCallBack  callBack) {
         this.mContext = mcontext;
         this.mMovie = arrayList;
+        this.callBack = callBack;
     }
 
     @Override
@@ -82,5 +72,16 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     }
 
 
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public ImageView imageView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.ivMoviePoster);
+
+        }
+
+
+    }
 }

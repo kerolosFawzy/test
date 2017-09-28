@@ -4,17 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-
         <variable
             name="Movie"
             type="com.massive.popmovie.model.Movie"/>
     </data>
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:scrollbars="vertical">
+        android:layout_height="fill_parent"
+       >
 
         <TextView
             android:id="@+id/MovieTitle"
@@ -49,6 +49,7 @@
             app:layout_constraintTop_toBottomOf="@+id/MovieTitle"
             app:layout_constraintVertical_bias="0.2"
             app:srcCompat="@drawable/popcorn"
+            app:poster_path="@{Movie.poster_path}"
             tools:ignore="ContentDescription" />
 
         <Button
@@ -95,12 +96,14 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="47dp"
-            android:text="TextView"
+            android:text="@{Movie.overview}"
             android:textSize="14sp"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Favourit_button" />
+            app:layout_constraintTop_toBottomOf="@+id/Favourit_button"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -241,41 +244,33 @@
         <Button
             android:layout_width="391dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:text="Click here to see the review "
-            app:layout_constraintBottom_toTopOf="@+id/ratingBar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView23"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintHorizontal_bias="1.0"
+            android:id="@+id/button" />
 
         <RatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:layout_margin="8dp"
             android:foregroundGravity="center_horizontal"
             android:isIndicator="true"
             android:numStars="5"
             android:progressTint="@color/colorPrimary"
+            android:rating="@{Movie.vote_average}"
             android:stepSize=".5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button" />
 
     </android.support.constraint.ConstraintLayout>
-
+</ScrollView>
 </layout>

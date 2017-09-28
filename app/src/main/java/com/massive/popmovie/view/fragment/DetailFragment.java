@@ -1,13 +1,19 @@
 package com.massive.popmovie.view.fragment;
 
+import android.content.Context;
+import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.GetChars;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.massive.popmovie.Interfaces.ResponseCallBack;
 import com.massive.popmovie.R;
 import com.massive.popmovie.Utlis.Constant;
@@ -16,10 +22,11 @@ import com.massive.popmovie.model.Movie;
 
 import java.util.ArrayList;
 
-public class DetailFragment extends Fragment implements ResponseCallBack {
-    Movie movies;
+public class DetailFragment extends android.app.Fragment {
+    Movie movies = GridFragment.movie;
     String url = Constant.POSTER_URL + movies.getPoster_path();
     DetialFragmentBinding binding;
+    Context context = getActivity();
 
     @Nullable
     @Override
@@ -29,8 +36,11 @@ public class DetailFragment extends Fragment implements ResponseCallBack {
         return binding.getRoot();
     }
 
-    @Override
-    public void OnSuccess(Movie message) {
-        this.movies = message;
+    @BindingAdapter({"bind:poster_path"})
+    public static void loadImage(ImageView view, String url) {
+        Glide.with(view.getContext()).load(Constant.POSTER_URL+url)
+                .error(R.drawable.play)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(view);
     }
 }
