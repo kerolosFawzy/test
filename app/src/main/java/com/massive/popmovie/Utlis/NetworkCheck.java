@@ -8,9 +8,6 @@ public class NetworkCheck {
     public static boolean isNetworkAvailable(Context mContext) {
         ConnectivityManager mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-        if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
-            return true;
-        }
-        return false;
+        return mNetworkInfo != null && mNetworkInfo.isConnected();
     }
 }

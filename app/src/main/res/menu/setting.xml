@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.massive.popmovie.view.fragment.GridFragment">
 
     <item
         android:id="@+id/normal"
@@ -8,12 +10,9 @@
     <item
         android:id="@+id/sortByPopular"
         android:title="Popular Movies" />
-
     <item
         android:id="@+id/sortByTopRated"
         android:title="High Rated Movies" />
-
-
     <item
         android:id="@+id/Favourite"
         android:icon="@drawable/favorite"

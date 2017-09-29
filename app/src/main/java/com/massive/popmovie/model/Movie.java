@@ -4,8 +4,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Movie extends BaseObservable implements Serializable {

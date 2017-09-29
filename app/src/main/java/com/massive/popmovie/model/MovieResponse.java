@@ -3,7 +3,6 @@ package com.massive.popmovie.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by minafaw on 9/26/2017.

@@ -13,7 +13,7 @@
     android:layout_height="fill_parent">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
        >
 
         <TextView
@@ -145,7 +145,7 @@
 
             <TextView
                 android:id="@+id/trailer1"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
@@ -180,7 +180,7 @@
 
             <TextView
                 android:id="@+id/trailer2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
@@ -215,7 +215,7 @@
 
             <TextView
                 android:id="@+id/trailer3"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
@@ -262,9 +262,8 @@
             android:layout_margin="8dp"
             android:foregroundGravity="center_horizontal"
             android:isIndicator="true"
-            android:numStars="5"
+            android:numStars="10"
             android:progressTint="@color/colorPrimary"
-            android:rating="@{Movie.vote_average}"
             android:stepSize=".5"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintLeft_toLeftOf="parent"
