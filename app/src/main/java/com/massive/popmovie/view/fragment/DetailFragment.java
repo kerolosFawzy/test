@@ -1,6 +1,7 @@
 package com.massive.popmovie.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.massive.popmovie.R;
 import com.massive.popmovie.Utlis.Constant;
 import com.massive.popmovie.databinding.DetialFragmentBinding;
 import com.massive.popmovie.model.Movie;
+import com.massive.popmovie.view.MainActivity;
 
 
 public class DetailFragment extends android.app.Fragment {
@@ -42,7 +44,9 @@ public class DetailFragment extends android.app.Fragment {
                 .into(view);
     }
 
-     public void buttonShowView_3(View view){
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        GridFragment.movie=null;
     }
 }
