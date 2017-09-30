@@ -6,11 +6,13 @@ import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -31,14 +33,19 @@ public class DetailFragment extends android.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.detial_fragment, container, false);
         binding.setMovie(movies);
-        RatingBar ratingBar= binding.ratingBar;
-        ratingBar.setRating((float) movies.getVote_average());
+        RatingBar ratingBar = binding.ratingBar;
+        try {
+            ratingBar.setRating((float) movies.getVote_average());
+        } catch (NullPointerException e) {
+            Log.e("rating bar",e.getMessage());
+
+        }
         return binding.getRoot();
     }
 
     @BindingAdapter({"bind:poster_path"})
     public static void loadImage(ImageView view, String url) {
-        Glide.with(view.getContext()).load(Constant.POSTER_URL+url)
+        Glide.with(view.getContext()).load(Constant.POSTER_URL + url)
                 .error(R.drawable.play)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(view);
@@ -47,6 +54,6 @@ public class DetailFragment extends android.app.Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        GridFragment.movie=null;
+        GridFragment.movie = null;
     }
 }
