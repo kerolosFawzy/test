@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if (GridFragment.movie == null) {
             getFragmentManager().beginTransaction().replace(R.id.FragmentContainer, new GridFragment())
-                    .addToBackStack(null).commit();
+                    .commit();
         } else
             getFragmentManager().beginTransaction().replace(R.id.FragmentContainer, new DetailFragment())
                     .commit();
