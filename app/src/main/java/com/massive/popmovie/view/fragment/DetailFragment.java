@@ -41,4 +41,8 @@ public class DetailFragment extends android.app.Fragment {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(view);
     }
+
+     public void buttonShowView_3(View view){
+
+    }
 }
