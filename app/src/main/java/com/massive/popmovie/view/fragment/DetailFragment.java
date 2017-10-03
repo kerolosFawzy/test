@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,22 @@ public class DetailFragment extends android.app.Fragment {
     private DetialFragmentBinding binding;
     Context context = getActivity();
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,7 +54,7 @@ public class DetailFragment extends android.app.Fragment {
         try {
             ratingBar.setRating((float) movies.getVote_average());
         } catch (NullPointerException e) {
-            Log.e("rating bar",e.getMessage());
+            Log.e("rating bar", e.getMessage());
 
         }
         return binding.getRoot();
@@ -51,9 +68,4 @@ public class DetailFragment extends android.app.Fragment {
                 .into(view);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        GridFragment.movie = null;
-    }
 }

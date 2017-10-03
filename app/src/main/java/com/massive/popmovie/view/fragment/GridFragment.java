@@ -26,7 +26,7 @@ import com.massive.popmovie.Utlis.Constant;
 import com.massive.popmovie.Utlis.NetworkCheck;
 import com.massive.popmovie.model.Movie;
 import com.massive.popmovie.model.MovieResponse;
-import com.massive.popmovie.view.MainActivity;
+import com.massive.popmovie.view.DetialsAcvtivty;
 
 import java.util.ArrayList;
 
@@ -78,7 +78,7 @@ public class GridFragment extends Fragment {
                         @Override
                         public void OnSuccess(Movie message) {
                             movie = message;
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            Intent intent = new Intent(getActivity(), DetialsAcvtivty.class);
                             startActivity(intent);
                         }
                     });
@@ -152,5 +152,6 @@ public class GridFragment extends Fragment {
         dialog.show();
         Toast.makeText(getActivity(), "Network Unavailable!", Toast.LENGTH_LONG).show();
     }
+
 }
 
