@@ -40,10 +40,21 @@ public class GridFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private MovieApi mService;
     public static Movie movie;
-    private String Flag = "normal";
+    private static String Flag = "normal";
     private Call<MovieResponse> call;
     private Context mcontext = getActivity();
     private View view;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,7 +110,6 @@ public class GridFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.grid_fragment, container, false);
         callfragment();
-
         return view;
     }
 

@@ -67,6 +67,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="135dp"
             android:background="#148eb7"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
             android:text="@string/add_it_favourite"
             app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintLeft_toRightOf="@+id/imageView2"
