@@ -26,6 +26,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.MainActivity" />
         </activity>
+
+        <provider
+            android:authorities="com.massive.popmovie"
+            android:name=".DataBase.DBContentProvider"
+            android:exported="false"
+            />
     </application>
 
 </manifest>
