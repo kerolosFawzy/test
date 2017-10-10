@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -79,6 +80,11 @@ public class GridFragment extends Fragment {
                 case "rated":
                     call = mService.getToRated(Constant.APIKEY);
                     break;
+                case "Favourite":
+                    ////// TODO: 10/11/2017 get data from cursor and display it 
+                    Cursor moviesCursor = getActivity().getContentResolver()
+                            .query(Constant.Entry.FULL_URI, null, null, null, null);
+                    break;
             }
 
             call.enqueue(new Callback<MovieResponse>() {
@@ -105,6 +111,15 @@ public class GridFragment extends Fragment {
             showErrormessage();
     }
 
+    private void getDataFromCursor(){
+        Cursor moviesCursor = getActivity().getContentResolver()
+                .query(Constant.Entry.FULL_URI, null, null, null, null);
+        while (moviesCursor.moveToNext()){
+            Movie movie=new Movie();
+
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -124,17 +139,18 @@ public class GridFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.normal:
                 Flag = "normal";
-                callfragment();
                 break;
             case R.id.sortByPopular:
                 Flag = "popular";
-                callfragment();
                 break;
             case R.id.sortByTopRated:
                 Flag = "rated";
-                callfragment();
+                break;
+            case R.id.Favourite:
+                Flag = "Favourite";
                 break;
         }
+        callfragment();
 
         return super.onOptionsItemSelected(item);
     }
