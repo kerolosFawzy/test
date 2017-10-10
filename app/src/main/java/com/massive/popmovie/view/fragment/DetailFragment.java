@@ -80,8 +80,13 @@ public class DetailFragment extends android.app.Fragment {
                     if (uri != null) {
                         binding.FavouritButton.setText("Remove From Favourit");
                     }
-                }else {
-                    //// TODO: 10/10/2017  renove from database
+                } else {
+                    long id = movies.getId();
+                    String _id = Long.toString(id);
+                    Uri uri = Constant.Entry.FULL_URI;
+                    uri =uri.buildUpon().appendPath(_id).build();
+                    getActivity().getContentResolver().delete(uri,null,null);
+                    binding.FavouritButton.setText("Add To Favourit");
                 }
 
             }

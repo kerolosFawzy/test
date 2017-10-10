@@ -14,7 +14,7 @@ public class Constant {
     public static String APIKEY = "5372c5a4714c65cf3e361699c681a136";
     public static String AUTHORTY = "com.massive.popmovie";
     private static final Uri BASE_URI = Uri.parse("content://" + AUTHORTY);
-    public static String PATH = Entry.DATABASE_TABLE;
+    public static String PATH ="MoviesTable" ;
 
     public static final class Entry implements BaseColumns {
         public static final Uri FULL_URI = BASE_URI.buildUpon().appendPath(PATH).build();
