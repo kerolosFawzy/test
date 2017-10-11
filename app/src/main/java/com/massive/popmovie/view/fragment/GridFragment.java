@@ -30,6 +30,8 @@ import com.massive.popmovie.model.MovieResponse;
 import com.massive.popmovie.view.DetialsAcvtivty;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +47,8 @@ public class GridFragment extends Fragment {
     private Call<MovieResponse> call;
     private Context mcontext = getActivity();
     private View view;
+    public ArrayList<Movie> FVmovies;
+    Movie movieF;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -64,7 +68,7 @@ public class GridFragment extends Fragment {
     }
 
     private void callfragment() {
-        if (NetworkCheck.isNetworkAvailable(getActivity())) {
+        if (NetworkCheck.isNetworkAvailable(getActivity()) || Flag.equals("Favourite")) {
             mRecyclerView = view.findViewById(R.id.GridRecyclerView);
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mcontext, 2);
             mRecyclerView.setLayoutManager(layoutManager);
@@ -81,10 +85,20 @@ public class GridFragment extends Fragment {
                     call = mService.getToRated(Constant.APIKEY);
                     break;
                 case "Favourite":
-                    ////// TODO: 10/11/2017 get data from cursor and display it 
-                    Cursor moviesCursor = getActivity().getContentResolver()
-                            .query(Constant.Entry.FULL_URI, null, null, null, null);
-                    break;
+                    getDataFromCursor();
+                    if (FVmovies.size() != 0) {
+                        GridAdapter adapter = new GridAdapter(getActivity(), FVmovies, new ResponseCallBack() {
+                            @Override
+                            public void OnSuccess(Movie message) {
+                                movie = message;
+                                Intent intent = new Intent(getActivity(), DetialsAcvtivty.class);
+                                startActivity(intent);
+                            }
+                        });
+                        mRecyclerView.setAdapter(adapter);
+                    }
+                    return;
+
             }
 
             call.enqueue(new Callback<MovieResponse>() {
@@ -111,12 +125,19 @@ public class GridFragment extends Fragment {
             showErrormessage();
     }
 
-    private void getDataFromCursor(){
+    private void getDataFromCursor() {
         Cursor moviesCursor = getActivity().getContentResolver()
                 .query(Constant.Entry.FULL_URI, null, null, null, null);
-        while (moviesCursor.moveToNext()){
-            Movie movie=new Movie();
-
+        FVmovies = new ArrayList<>();
+        while (moviesCursor.moveToNext()) {
+            movieF = new Movie();
+            movieF.setId(moviesCursor.getLong(moviesCursor.getColumnIndex("ID")));
+            movieF.setTitle(moviesCursor.getString(moviesCursor.getColumnIndex("name")));
+            movieF.setOverview(moviesCursor.getString(moviesCursor.getColumnIndex("overview")));
+            movieF.setPoster_path(moviesCursor.getString(moviesCursor.getColumnIndex("poster")));
+            movieF.setRelease_date(moviesCursor.getString(moviesCursor.getColumnIndex("release_date")));
+            movieF.setVote_average(moviesCursor.getFloat(moviesCursor.getColumnIndex("vote_averge")));
+            FVmovies.add(movieF);
         }
     }
 

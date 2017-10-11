@@ -3,6 +3,7 @@ package com.massive.popmovie.view.fragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -27,6 +28,7 @@ import com.massive.popmovie.model.Movie;
 import com.massive.popmovie.view.MainActivity;
 
 import java.net.URI;
+import java.util.ArrayList;
 
 import butterknife.OnClick;
 
@@ -36,7 +38,9 @@ public class DetailFragment extends android.app.Fragment {
     private DetialFragmentBinding binding;
     private Context context = getActivity();
     private ContentValues contentValues;
-    private int Flag = 0;
+    private int Flag;
+    ArrayList<Movie> FVmovies ;
+    Movie movieF;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -54,6 +58,37 @@ public class DetailFragment extends android.app.Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    private void getDataFromCursor() {
+        Cursor moviesCursor = getActivity().getContentResolver()
+                .query(Constant.Entry.FULL_URI, null, null, null, null);
+        FVmovies = new ArrayList<>();
+        while (moviesCursor.moveToNext()) {
+            movieF = new Movie();
+            movieF.setId(moviesCursor.getLong(moviesCursor.getColumnIndex("ID")));
+            movieF.setTitle(moviesCursor.getString(moviesCursor.getColumnIndex("name")));
+            movieF.setOverview(moviesCursor.getString(moviesCursor.getColumnIndex("overview")));
+            movieF.setPoster_path(moviesCursor.getString(moviesCursor.getColumnIndex("poster")));
+            movieF.setRelease_date(moviesCursor.getString(moviesCursor.getColumnIndex("release_date")));
+            movieF.setVote_average(moviesCursor.getFloat(moviesCursor.getColumnIndex("vote_averge")));
+            FVmovies.add(movieF);
+        }
+    }
+
+
+    private boolean CheckInDataBase() {
+        if (FVmovies == null)
+            return false;
+        else {
+            int j = 0;
+            while (FVmovies.size() > j) {
+                if (FVmovies.get(j).getId() == movies.getId())
+                    return true;
+                j++;
+            }
+        }
+        return false;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,28 +100,32 @@ public class DetailFragment extends android.app.Fragment {
         } catch (NullPointerException e) {
             Log.e("rating bar", e.getMessage());
         }
+        getDataFromCursor();
+        if (CheckInDataBase()) {
+            binding.FavouritButton.setText((R.string.RemoveButton));
+            Flag = 0;
+        } else Flag = 1;
 
         binding.FavouritButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Flag == 0)
-                    Flag = 1;
-                else
-                    Flag = 0;
+
 
                 if (Flag == 1) {
                     addData();
                     Uri uri = getActivity().getContentResolver().insert(Constant.Entry.FULL_URI, contentValues);
                     if (uri != null) {
-                        binding.FavouritButton.setText("Remove From Favourit");
+                        binding.FavouritButton.setText(R.string.RemoveButton);
+                        Flag = 0;
                     }
                 } else {
                     long id = movies.getId();
                     String _id = Long.toString(id);
                     Uri uri = Constant.Entry.FULL_URI;
-                    uri =uri.buildUpon().appendPath(_id).build();
-                    getActivity().getContentResolver().delete(uri,null,null);
-                    binding.FavouritButton.setText("Add To Favourit");
+                    uri = uri.buildUpon().appendPath(_id).build();
+                    getActivity().getContentResolver().delete(uri, null, null);
+                    binding.FavouritButton.setText(R.string.AddButton);
+                    Flag = 1;
                 }
 
             }
