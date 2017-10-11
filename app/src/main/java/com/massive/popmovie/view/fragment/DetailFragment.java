@@ -2,13 +2,11 @@ package com.massive.popmovie.view.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,21 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.Toast;
 
-import com.massive.popmovie.DataBase.DBContentProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.massive.popmovie.R;
 import com.massive.popmovie.Utlis.Constant;
 import com.massive.popmovie.databinding.DetialFragmentBinding;
 import com.massive.popmovie.model.Movie;
-import com.massive.popmovie.view.MainActivity;
 
-import java.net.URI;
 import java.util.ArrayList;
-
-import butterknife.OnClick;
 
 
 public class DetailFragment extends android.app.Fragment {

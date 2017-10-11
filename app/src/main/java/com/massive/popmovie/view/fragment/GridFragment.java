@@ -67,6 +67,12 @@ public class GridFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        callfragment();
+    }
+
     private void callfragment() {
         if (NetworkCheck.isNetworkAvailable(getActivity()) || Flag.equals("Favourite")) {
             mRecyclerView = view.findViewById(R.id.GridRecyclerView);
