@@ -3,4 +3,5 @@
     <string name="add_it_favourite">Add it Favourite</string>
     <string name="RemoveButton">Remove From Favourit</string>
     <string name="AddButton">Add To Favourit</string>
+    <string name="click_review">Click here to see the review</string>
 </resources>

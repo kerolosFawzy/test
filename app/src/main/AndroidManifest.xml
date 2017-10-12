@@ -28,10 +28,11 @@
         </activity>
 
         <provider
-            android:authorities="com.massive.popmovie"
             android:name=".DataBase.DBContentProvider"
-            android:exported="false"
-            />
+            android:authorities="com.massive.popmovie"
+            android:exported="false" />
+
+        <activity android:name=".view.ReviewActivity"></activity>
     </application>
 
 </manifest>
