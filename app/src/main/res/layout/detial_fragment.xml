@@ -7,6 +7,9 @@
         <variable
             name="Movie"
             type="com.massive.popmovie.model.Movie" />
+        <variable
+            name="Trailer"
+            type="com.massive.popmovie.model.Trailer"/>
     </data>
 <ScrollView
     android:layout_width="match_parent"

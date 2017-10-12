@@ -1,7 +1,9 @@
 package com.massive.popmovie.view.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
@@ -14,15 +16,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.massive.popmovie.Interfaces.MovieApi;
+import com.massive.popmovie.Network.RetrofitClient;
 import com.massive.popmovie.R;
 import com.massive.popmovie.Utlis.Constant;
+import com.massive.popmovie.Utlis.NetworkCheck;
 import com.massive.popmovie.databinding.DetialFragmentBinding;
 import com.massive.popmovie.model.Movie;
+import com.massive.popmovie.model.Trailer;
+import com.massive.popmovie.model.TrailerResponse;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DetailFragment extends android.app.Fragment {
@@ -31,8 +43,12 @@ public class DetailFragment extends android.app.Fragment {
     private Context context = getActivity();
     private ContentValues contentValues;
     private int Flag;
-    ArrayList<Movie> FVmovies ;
+    private MovieApi movieApi;
+    private ArrayList<Trailer> trailers;
+    Call<TrailerResponse> call;
+    ArrayList<Movie> FVmovies;
     Movie movieF;
+    String Unavailable = "This video Unavailable";
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -93,6 +109,8 @@ public class DetailFragment extends android.app.Fragment {
             Log.e("rating bar", e.getMessage());
         }
         getDataFromCursor();
+        CallRetrofit();
+
         if (CheckInDataBase()) {
             binding.FavouritButton.setText((R.string.RemoveButton));
             Flag = 0;
@@ -101,8 +119,6 @@ public class DetailFragment extends android.app.Fragment {
         binding.FavouritButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 if (Flag == 1) {
                     addData();
                     Uri uri = getActivity().getContentResolver().insert(Constant.Entry.FULL_URI, contentValues);
@@ -122,6 +138,41 @@ public class DetailFragment extends android.app.Fragment {
 
             }
         });
+
+        if (trailers != null) {
+            binding.trailer1.setText(trailers.get(0).getName());
+            binding.trailer2.setText(trailers.get(1).getName());
+            binding.trailer3.setText(trailers.get(2).getName());
+        }
+
+        binding.buttonShowView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (trailers.get(0).getKey() != null)
+                    watchYoutubeVideo(trailers.get(0).getKey());
+                else
+                    Constant.MakeToast(context, Unavailable);
+            }
+        });
+
+        binding.buttonShowView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (trailers.get(1).getKey() != null)
+                    watchYoutubeVideo(trailers.get(1).getKey());
+                else
+                    Constant.MakeToast(context, Unavailable);
+            }
+        });
+        binding.buttonShowView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (trailers.get(2).getKey() != null)
+                    watchYoutubeVideo(trailers.get(2).getKey());
+                else
+                    Constant.MakeToast(context, Unavailable);
+            }
+        });
         return binding.getRoot();
     }
 
@@ -133,6 +184,39 @@ public class DetailFragment extends android.app.Fragment {
         contentValues.put(Constant.Entry.DATE, movies.getRelease_date());
         contentValues.put(Constant.Entry.VOTE, movies.getVote_average());
         contentValues.put(Constant.Entry.OVERVIEW, movies.getOverview());
+    }
+
+    private void CallRetrofit() {
+        if (NetworkCheck.isNetworkAvailable(getActivity())) {
+            movieApi = RetrofitClient.getClient().create(MovieApi.class);
+            String id = String.valueOf(movies.getId());
+            call = movieApi.getTrailers(id, Constant.APIKEY);
+
+            call.enqueue(new Callback<TrailerResponse>() {
+                @Override
+                public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
+                    trailers = response.body().getResults();
+                }
+
+                @Override
+                public void onFailure(Call<TrailerResponse> call, Throwable t) {
+                    call.cancel();
+                    Constant.MakeToast(context, "Respone error");
+                }
+            });
+        } else
+            Constant.MakeToast(getActivity(), "Turn on your network");
+    }
+
+    private void watchYoutubeVideo(String key) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constant.BASE_YOUTUBE + key));
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(Constant.BASE_YOUTUBE + key));
+            context.startActivity(intent);
+        }
     }
 
     @BindingAdapter({"bind:poster_path"})

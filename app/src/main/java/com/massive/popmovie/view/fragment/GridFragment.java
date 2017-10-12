@@ -104,7 +104,6 @@ public class GridFragment extends Fragment {
                         mRecyclerView.setAdapter(adapter);
                     }
                     return;
-
             }
 
             call.enqueue(new Callback<MovieResponse>() {
@@ -146,6 +145,7 @@ public class GridFragment extends Fragment {
             FVmovies.add(movieF);
         }
     }
+
 
     @Nullable
     @Override
