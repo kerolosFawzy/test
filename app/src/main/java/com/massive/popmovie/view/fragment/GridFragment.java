@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -49,10 +50,17 @@ public class GridFragment extends Fragment {
     private View view;
     public ArrayList<Movie> FVmovies;
     Movie movieF;
+    RecyclerView getmRecyclerView;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        
     }
 
     @Override
