@@ -47,11 +47,10 @@ public class DetailFragment extends android.app.Fragment {
     private int Flag;
     private MovieApi movieApi;
     private ArrayList<Trailer> trailers = new ArrayList<>();
-    Call<reviewsResponse> call;
-    Call<TrailerResponse> responseCall;
-    ArrayList<Movie> FVmovies;
-    Movie movieF;
-    String Unavailable = "This video Unavailable";
+    private Call<reviewsResponse> call;
+    private ArrayList<Movie> FVmovies;
+    private Movie movieF;
+    private String Unavailable = "This video Unavailable";
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -141,17 +140,16 @@ public class DetailFragment extends android.app.Fragment {
             }
         });
 
-        if (!trailers.isEmpty()) {
-            binding.trailer1.setText(trailers.get(0).getName());
-            binding.trailer2.setText(trailers.get(1).getName());
-            binding.trailer3.setText(trailers.get(2).getName());
-        }
 
         binding.buttonShowView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (trailers.get(0).getKey() != null)
-                    watchYoutubeVideo(trailers.get(0).getKey());
+                    try {
+                        watchYoutubeVideo(trailers.get(0).getKey());
+                    } catch (Exception e) {
+                        Constant.MakeToast(context, Unavailable);
+                    }
                 else
                     Constant.MakeToast(context, Unavailable);
             }
@@ -161,7 +159,11 @@ public class DetailFragment extends android.app.Fragment {
             @Override
             public void onClick(View view) {
                 if (trailers.get(1).getKey() != null)
-                    watchYoutubeVideo(trailers.get(1).getKey());
+                    try {
+                        watchYoutubeVideo(trailers.get(1).getKey());
+                    } catch (Exception e) {
+                        Constant.MakeToast(context, Unavailable);
+                    }
                 else
                     Constant.MakeToast(context, Unavailable);
             }
@@ -170,9 +172,13 @@ public class DetailFragment extends android.app.Fragment {
             @Override
             public void onClick(View view) {
                 if (trailers != null && trailers.size() > 2) {
-                    if (trailers.get(2).getKey() != null)
-                        watchYoutubeVideo(trailers.get(2).getKey());
-                    else
+                    if (trailers.get(2).getKey() != null) {
+                        try {
+                            watchYoutubeVideo(trailers.get(2).getKey());
+                        } catch (Exception e) {
+                            Constant.MakeToast(context, Unavailable);
+                        }
+                    } else
                         Constant.MakeToast(context, Unavailable);
                 }
             }
@@ -182,7 +188,6 @@ public class DetailFragment extends android.app.Fragment {
             @Override
             public void onClick(View view) {
                 CallReviewsRetrofit();
-
             }
         });
         return binding.getRoot();
@@ -202,7 +207,7 @@ public class DetailFragment extends android.app.Fragment {
         if (NetworkCheck.isNetworkAvailable(getActivity())) {
             movieApi = RetrofitClient.getClient().create(MovieApi.class);
             String id = String.valueOf(movies.getId());
-            responseCall = movieApi.getTrailers(id, Constant.APIKEY);
+            Call<TrailerResponse> responseCall = movieApi.getTrailers(id, Constant.APIKEY);
 
             responseCall.enqueue(new Callback<TrailerResponse>() {
                 @Override
@@ -230,9 +235,13 @@ public class DetailFragment extends android.app.Fragment {
                 @Override
                 public void onResponse(Call<reviewsResponse> call, Response<reviewsResponse> response) {
                     final ArrayList<Reviews> reviewses = response.body().getResults();
-                    Intent intent = new Intent(getActivity(), ReviewActivity.class);
-                    intent.putExtra("data",reviewses);
-                    startActivity(intent);
+
+                    if (reviewses.isEmpty() || reviewses.size() == 0) {
+                    } else {
+                        Intent intent = new Intent(getActivity(), ReviewActivity.class);
+                        intent.putExtra("data", reviewses);
+                        startActivity(intent);
+                    }
                 }
 
                 @Override
@@ -247,12 +256,15 @@ public class DetailFragment extends android.app.Fragment {
     }
 
     private void watchYoutubeVideo(String key) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constant.BASE_YOUTUBE + key));
-            getActivity().startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            Constant.MakeToast(context, "try again");
-        }
+        if (NetworkCheck.isNetworkAvailable(getActivity())) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constant.BASE_YOUTUBE + key));
+                getActivity().startActivity(intent);
+            } catch (ActivityNotFoundException ex) {
+                Constant.MakeToast(context, "try again");
+            }
+        } else Constant.MakeToast(context, "Turn on your Network");
+
     }
 
     @BindingAdapter({"bind:poster_path"})

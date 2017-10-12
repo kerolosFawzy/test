@@ -12,16 +12,14 @@ import com.massive.popmovie.model.Reviews;
 import java.util.ArrayList;
 
 public class ReviewActivity extends AppCompatActivity {
-    ActivityReviewBinding reviewBinding;
-    Reviews reviews;
+    private Reviews reviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        reviewBinding = DataBindingUtil.setContentView(this, R.layout.activity_review);
+        ActivityReviewBinding reviewBinding = DataBindingUtil.setContentView(this, R.layout.activity_review);
         Intent intent = getIntent();
-        ArrayList<Reviews> reviewsArrayList = new ArrayList<>();
-        reviewsArrayList = (ArrayList<Reviews>) intent.getExtras().getSerializable("data");
+        ArrayList<Reviews> reviewsArrayList = (ArrayList<Reviews>) intent.getExtras().getSerializable("data");
         if (reviewsArrayList.size() != 0)
             reviews = reviewsArrayList.get(0);
         if (reviews == null)
