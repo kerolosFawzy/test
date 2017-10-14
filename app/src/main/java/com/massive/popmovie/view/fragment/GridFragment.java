@@ -59,29 +59,7 @@ public class GridFragment extends Fragment {
     Movie movieF;
     private String LastPostiionKey = "LastPostiionKey";
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        int lastFirstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
-        //int lastFirstVisiblePosition =  mRecyclerView.getScrollY();
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(LastPostiionKey, lastFirstVisiblePosition);
-        editor.apply();
-    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        if (!getActivity().isFinishing()) {
-//            getActivity().getSharedPreferences(LastPostiionKey, Context.MODE_PRIVATE).edit().clear().apply();
-//        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -169,6 +147,10 @@ public class GridFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(savedInstanceState != null && savedInstanceState.containsKey(LastPostiionKey)){
+            Parcelable layoutManagerState =  savedInstanceState.getParcelable(LastPostiionKey);
+            layoutManager.onRestoreInstanceState(layoutManagerState);
+        }
 
 
     }
@@ -176,8 +158,8 @@ public class GridFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        int lastFirstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
-        outState.putInt(LastPostiionKey, lastFirstVisiblePosition);
+        Parcelable layoutManagerState = layoutManager.onSaveInstanceState();
+        outState.putParcelable(LastPostiionKey, layoutManagerState);
     }
 
     @Nullable
