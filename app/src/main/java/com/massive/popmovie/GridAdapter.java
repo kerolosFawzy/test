@@ -2,6 +2,7 @@ package com.massive.popmovie;
 
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +16,12 @@ import com.massive.popmovie.model.Movie;
 
 import java.util.ArrayList;
 
-/**
- * Created by minafaw on 9/25/2017.
- */
 
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     private ArrayList<Movie> mMovie;
     private ResponseCallBack callBack;
     private Context mContext;
-
-
 
     public GridAdapter(Context mcontext, ArrayList<Movie> arrayList , ResponseCallBack  callBack) {
         this.mContext = mcontext;
@@ -64,16 +60,15 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView imageView;
+        ImageView imageView;
 
-        public ViewHolder(View itemView) {
+         ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.ivMoviePoster);
 
         }
-
-
     }
+
 }

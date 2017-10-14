@@ -4,13 +4,20 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
+
+import android.os.Handler;
+import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,8 +38,7 @@ import com.massive.popmovie.model.MovieResponse;
 import com.massive.popmovie.view.DetialsAcvtivty;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,6 +48,7 @@ public class GridFragment extends Fragment {
 
     private GridAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    GridLayoutManager layoutManager;
     private MovieApi mService;
     public static Movie movie;
     private static String Flag = "normal";
@@ -50,23 +57,30 @@ public class GridFragment extends Fragment {
     private View view;
     public ArrayList<Movie> FVmovies;
     Movie movieF;
-    RecyclerView getmRecyclerView;
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
+    private String LastPostiionKey = "LastPostiionKey";
 
     @Override
     public void onPause() {
         super.onPause();
-        
+        int lastFirstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+        //int lastFirstVisiblePosition =  mRecyclerView.getScrollY();
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(LastPostiionKey, lastFirstVisiblePosition);
+        editor.apply();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        if (!getActivity().isFinishing()) {
+//            getActivity().getSharedPreferences(LastPostiionKey, Context.MODE_PRIVATE).edit().clear().apply();
+//        }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
@@ -75,16 +89,10 @@ public class GridFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        callfragment();
-    }
-
     private void callfragment() {
         if (NetworkCheck.isNetworkAvailable(getActivity()) || Flag.equals("Favourite")) {
             mRecyclerView = view.findViewById(R.id.GridRecyclerView);
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mcontext, 2);
+            layoutManager = new GridLayoutManager(mcontext, 2, GridLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(layoutManager);
 
             mService = RetrofitClient.getClient().create(MovieApi.class);
@@ -110,10 +118,13 @@ public class GridFragment extends Fragment {
                             }
                         });
                         mRecyclerView.setAdapter(adapter);
+                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LastPostiionKey,Context.MODE_PRIVATE);
+                        int lastFirstVisiblePosition = sharedPreferences.getInt(LastPostiionKey, 0);
+                        Constant.MakeToast(getActivity(), "my value = " + lastFirstVisiblePosition);
+                        layoutManager.scrollToPosition(lastFirstVisiblePosition-1);
                     }
                     return;
             }
-
             call.enqueue(new Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -154,6 +165,20 @@ public class GridFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int lastFirstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+        outState.putInt(LastPostiionKey, lastFirstVisiblePosition);
+    }
 
     @Nullable
     @Override
