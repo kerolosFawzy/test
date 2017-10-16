@@ -53,24 +53,13 @@ public class GridFragment extends Fragment {
     public ArrayList<Movie> FVmovies;
     Movie movieF;
     private String LastPostiionKey = "LastPostiionKey";
-    Parcelable state;
-
-
-    private Parcelable listState;
     public int scrollPosition;
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-
     }
 
     @Override
@@ -81,28 +70,23 @@ public class GridFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(LastPostiionKey, scrollPosition);
         editor.commit();
-
-
-        Parcelable parcelable = layoutManager.onSaveInstanceState();
-        outState.putParcelable(LastPostiionKey, parcelable);
     }
-
-
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.grid_fragment, container, false);
         callfragment();
-
+        setScroll();
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        scrollPosition = sharedPreferences.getInt(LastPostiionKey, 18);
+    private void setScroll(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LastPostiionKey, Context.MODE_PRIVATE);
+        int lastFirstVisiblePosition = sharedPreferences.getInt(LastPostiionKey, 20);
+        Constant.MakeToast(getActivity(), "my value = " + lastFirstVisiblePosition);
+        if (scrollPosition!=0)
+        mRecyclerView.scrollToPosition(lastFirstVisiblePosition - 1);
     }
 
     private void callfragment() {
@@ -110,7 +94,6 @@ public class GridFragment extends Fragment {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.GridRecyclerView);
             layoutManager = new GridLayoutManager(getActivity() , 2, GridLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(this.layoutManager);
-
             mService = RetrofitClient.getClient().create(MovieApi.class);
             switch (Flag) {
                 case "normal":
@@ -134,12 +117,6 @@ public class GridFragment extends Fragment {
                             }
                         });
                         mRecyclerView.setAdapter(adapter);
-
-
-//                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LastPostiionKey,Context.MODE_PRIVATE);
-//                        int lastFirstVisiblePosition = sharedPreferences.getInt(LastPostiionKey, 0);
-//                        Constant.MakeToast(getActivity(), "my value = " + lastFirstVisiblePosition);
-//                        layoutManager.scrollToPosition(lastFirstVisiblePosition-1);
                     }
                     return;
             }
@@ -158,24 +135,13 @@ public class GridFragment extends Fragment {
                     });
                     mRecyclerView.setAdapter(adapter);
                 }
-
                 @Override
                 public void onFailure(Call<MovieResponse> call, Throwable t) {
 
                 }
             });
-
         } else
             showErrormessage();
-    }
-
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null)
-            state = savedInstanceState.getParcelable(LastPostiionKey);
-
     }
 
     private void getDataFromCursor() {
