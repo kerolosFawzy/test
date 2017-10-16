@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".Views.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,11 +20,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.DetialsAcvtivty"
-            android:parentActivityName=".view.MainActivity">
+            android:name=".Views.DetialsAcvtivty"
+            android:parentActivityName=".Views.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.MainActivity" />
+                android:value=".Views.MainActivity" />
         </activity>
 
         <provider
@@ -32,7 +32,7 @@
             android:authorities="com.massive.popmovie"
             android:exported="false" />
 
-        <activity android:name=".view.ReviewActivity"></activity>
+        <activity android:name=".Views.ReviewActivity"></activity>
     </application>
 
 </manifest>

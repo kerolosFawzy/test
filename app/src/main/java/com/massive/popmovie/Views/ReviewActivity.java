@@ -1,4 +1,4 @@
-package com.massive.popmovie.view;
+package com.massive.popmovie.Views;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;

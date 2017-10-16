@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "com.massive.popmovie"
         minSdkVersion 17
-        targetSdkVersion 26
+        targetSdkVersion 25
 
         versionCode 1
         versionName "1.0"
@@ -34,9 +34,9 @@ dependencies {
     })
 
 
-    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:appcompat-v7:25.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:recyclerview-v7:26.+'
+    compile 'com.android.support:recyclerview-v7:25.+'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'

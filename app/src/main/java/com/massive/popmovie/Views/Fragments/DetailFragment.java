@@ -1,4 +1,4 @@
-package com.massive.popmovie.view.fragment;
+package com.massive.popmovie.Views.Fragments;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
@@ -30,7 +30,7 @@ import com.massive.popmovie.model.Reviews;
 import com.massive.popmovie.model.Trailer;
 import com.massive.popmovie.model.TrailerResponse;
 import com.massive.popmovie.model.reviewsResponse;
-import com.massive.popmovie.view.ReviewActivity;
+import com.massive.popmovie.Views.ReviewActivity;
 
 import java.util.ArrayList;
 

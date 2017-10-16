@@ -1,12 +1,11 @@
-package com.massive.popmovie.view;
+package com.massive.popmovie.Views;
 
 import android.os.PersistableBundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.massive.popmovie.R;
-import com.massive.popmovie.view.fragment.DetailFragment;
+import com.massive.popmovie.Views.Fragments.DetailFragment;
 
 public class DetialsAcvtivty extends AppCompatActivity {
 

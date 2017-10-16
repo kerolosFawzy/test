@@ -4,7 +4,6 @@ import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,9 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.massive.popmovie.Utlis.Constant;
-import com.massive.popmovie.view.MainActivity;
-
-import java.util.regex.Matcher;
 
 /**
  * Created by minafaw on 10/10/2017.

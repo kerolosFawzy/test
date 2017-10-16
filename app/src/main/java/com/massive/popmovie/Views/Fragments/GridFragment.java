@@ -1,4 +1,4 @@
-package com.massive.popmovie.view.fragment;
+package com.massive.popmovie.Views.Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -9,15 +9,11 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 
-import android.os.Handler;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,10 +31,9 @@ import com.massive.popmovie.Utlis.Constant;
 import com.massive.popmovie.Utlis.NetworkCheck;
 import com.massive.popmovie.model.Movie;
 import com.massive.popmovie.model.MovieResponse;
-import com.massive.popmovie.view.DetialsAcvtivty;
+import com.massive.popmovie.Views.DetialsAcvtivty;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +42,7 @@ import retrofit2.Response;
 public class GridFragment extends Fragment {
 
     private GridAdapter mAdapter;
-    private RecyclerView mRecyclerView;
+    public static RecyclerView mRecyclerView;
     GridLayoutManager layoutManager;
     private MovieApi mService;
     public static Movie movie;
@@ -58,20 +53,63 @@ public class GridFragment extends Fragment {
     public ArrayList<Movie> FVmovies;
     Movie movieF;
     private String LastPostiionKey = "LastPostiionKey";
+    Parcelable state;
 
 
+    private Parcelable listState;
+    public int scrollPosition;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        scrollPosition = layoutManager.findFirstVisibleItemPosition();
+        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(LastPostiionKey, scrollPosition);
+        editor.commit();
+
+
+        Parcelable parcelable = layoutManager.onSaveInstanceState();
+        outState.putParcelable(LastPostiionKey, parcelable);
+    }
+
+
+
+    @Nullable
+    @Override
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.grid_fragment, container, false);
+        callfragment();
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        scrollPosition = sharedPreferences.getInt(LastPostiionKey, 18);
     }
 
     private void callfragment() {
         if (NetworkCheck.isNetworkAvailable(getActivity()) || Flag.equals("Favourite")) {
-            mRecyclerView = view.findViewById(R.id.GridRecyclerView);
-            layoutManager = new GridLayoutManager(mcontext, 2, GridLayoutManager.VERTICAL, false);
-            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView = (RecyclerView) view.findViewById(R.id.GridRecyclerView);
+            layoutManager = new GridLayoutManager(getActivity() , 2, GridLayoutManager.VERTICAL, false);
+            mRecyclerView.setLayoutManager(this.layoutManager);
 
             mService = RetrofitClient.getClient().create(MovieApi.class);
             switch (Flag) {
@@ -96,10 +134,12 @@ public class GridFragment extends Fragment {
                             }
                         });
                         mRecyclerView.setAdapter(adapter);
-                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LastPostiionKey,Context.MODE_PRIVATE);
-                        int lastFirstVisiblePosition = sharedPreferences.getInt(LastPostiionKey, 0);
-                        Constant.MakeToast(getActivity(), "my value = " + lastFirstVisiblePosition);
-                        layoutManager.scrollToPosition(lastFirstVisiblePosition-1);
+
+
+//                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LastPostiionKey,Context.MODE_PRIVATE);
+//                        int lastFirstVisiblePosition = sharedPreferences.getInt(LastPostiionKey, 0);
+//                        Constant.MakeToast(getActivity(), "my value = " + lastFirstVisiblePosition);
+//                        layoutManager.scrollToPosition(lastFirstVisiblePosition-1);
                     }
                     return;
             }
@@ -107,6 +147,7 @@ public class GridFragment extends Fragment {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                     ArrayList<Movie> movies = response.body().getResults();
+
                     GridAdapter adapter = new GridAdapter(getActivity(), movies, new ResponseCallBack() {
                         @Override
                         public void OnSuccess(Movie message) {
@@ -123,8 +164,18 @@ public class GridFragment extends Fragment {
 
                 }
             });
+
         } else
             showErrormessage();
+    }
+
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null)
+            state = savedInstanceState.getParcelable(LastPostiionKey);
+
     }
 
     private void getDataFromCursor() {
@@ -141,33 +192,6 @@ public class GridFragment extends Fragment {
             movieF.setVote_average(moviesCursor.getFloat(moviesCursor.getColumnIndex("vote_averge")));
             FVmovies.add(movieF);
         }
-    }
-
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if(savedInstanceState != null && savedInstanceState.containsKey(LastPostiionKey)){
-            Parcelable layoutManagerState =  savedInstanceState.getParcelable(LastPostiionKey);
-            layoutManager.onRestoreInstanceState(layoutManagerState);
-        }
-
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Parcelable layoutManagerState = layoutManager.onSaveInstanceState();
-        outState.putParcelable(LastPostiionKey, layoutManagerState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.grid_fragment, container, false);
-        callfragment();
-        return view;
     }
 
     @Override
