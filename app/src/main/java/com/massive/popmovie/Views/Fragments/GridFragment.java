@@ -43,8 +43,7 @@ import retrofit2.Response;
 public class GridFragment extends Fragment {
 
     private GridAdapter mAdapter;
-    @SuppressLint("StaticFieldLeak")
-    public static RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     GridLayoutManager layoutManager;
     private MovieApi mService;
     public static Movie movie;
@@ -56,32 +55,31 @@ public class GridFragment extends Fragment {
     Movie movieF;
     private String LastPostiionKey = "LastPostiionKey";
     private int scrollPosition;
-
-    public int getScrollPosition() {
-        return scrollPosition;
-    }
-
-    public void setScrollPosition(int scrollPosition) {
-        this.scrollPosition = scrollPosition;
-    }
-
-
+    Parcelable parcelable;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-        if (savedInstanceState != null)
-            scrollPosition = savedInstanceState.getInt(LastPostiionKey);
-        super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        scrollPosition = layoutManager.findFirstVisibleItemPosition();
-        outState.putInt(LastPostiionKey, scrollPosition);
         super.onSaveInstanceState(outState);
+        parcelable = mRecyclerView.getLayoutManager().onSaveInstanceState();
+//        scrollPosition = layoutManager.findFirstVisibleItemPosition();
+        outState.putParcelable(LastPostiionKey, parcelable);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState!=null)
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(LastPostiionKey));
+//        if (savedInstanceState != null)
+//            scrollPosition = savedInstanceState.getInt(LastPostiionKey);
     }
 
     @Nullable
@@ -89,9 +87,7 @@ public class GridFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.grid_fragment, container, false);
         boolean cond = callfragment();
-        if (cond)
-            if (scrollPosition!=-1)
-                setScroll(scrollPosition);
+
         return view;
     }
 
@@ -99,7 +95,15 @@ public class GridFragment extends Fragment {
         scrollPosition = scroll;
         Constant.MakeToast(getActivity(), "my value = " + scrollPosition);
         if (scrollPosition != 0)
-            layoutManager.scrollToPosition(scrollPosition - 1);
+            mRecyclerView.smoothScrollToPosition(scrollPosition);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+       // setScroll(scrollPosition);
+
     }
 
     private boolean callfragment() {
