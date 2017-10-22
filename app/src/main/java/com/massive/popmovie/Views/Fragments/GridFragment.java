@@ -66,33 +66,31 @@ public class GridFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         scrollPosition = layoutManager.findFirstVisibleItemPosition();
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(LastPostiionKey, scrollPosition);
-        editor.commit();
+        outState.putInt(LastPostiionKey, scrollPosition);
     }
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.grid_fragment, container, false);
-        callfragment();
-        setScroll();
+        boolean cond = callfragment();
+        if (cond)
+            if (savedInstanceState != null)
+                setScroll(savedInstanceState.getInt(LastPostiionKey));
         return view;
     }
 
-    private void setScroll(){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(LastPostiionKey, Context.MODE_PRIVATE);
-        int lastFirstVisiblePosition = sharedPreferences.getInt(LastPostiionKey, 20);
-        Constant.MakeToast(getActivity(), "my value = " + lastFirstVisiblePosition);
-        if (scrollPosition!=0)
-        mRecyclerView.scrollToPosition(lastFirstVisiblePosition - 1);
+    private void setScroll(int scroll) {
+        scrollPosition = scroll;
+        Constant.MakeToast(getActivity(), "my value = " + scrollPosition);
+        if (scrollPosition != -1)
+            layoutManager.scrollToPosition(scrollPosition - 1);
     }
 
-    private void callfragment() {
+    private boolean callfragment() {
         if (NetworkCheck.isNetworkAvailable(getActivity()) || Flag.equals("Favourite")) {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.GridRecyclerView);
-            layoutManager = new GridLayoutManager(getActivity() , 2, GridLayoutManager.VERTICAL, false);
+            layoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
             mRecyclerView.setLayoutManager(this.layoutManager);
             mService = RetrofitClient.getClient().create(MovieApi.class);
             switch (Flag) {
@@ -118,7 +116,7 @@ public class GridFragment extends Fragment {
                         });
                         mRecyclerView.setAdapter(adapter);
                     }
-                    return;
+                    return true;
             }
             call.enqueue(new Callback<MovieResponse>() {
                 @Override
@@ -134,14 +132,18 @@ public class GridFragment extends Fragment {
                         }
                     });
                     mRecyclerView.setAdapter(adapter);
+
                 }
+
                 @Override
                 public void onFailure(Call<MovieResponse> call, Throwable t) {
 
                 }
             });
+            return true;
         } else
             showErrormessage();
+        return false;
     }
 
     private void getDataFromCursor() {

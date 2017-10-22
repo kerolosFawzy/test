@@ -268,8 +268,8 @@ public class DetailFragment extends android.app.Fragment {
     }
 
     @BindingAdapter({"bind:poster_path"})
-    public static void loadImage(ImageView view, String url) {
-        Glide.with(view.getContext()).load(Constant.POSTER_URL + url)
+    public  void loadImage(ImageView view, String url) {
+        Glide.with(context).load(Constant.POSTER_URL + url)
                 .error(R.drawable.play)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(view);
