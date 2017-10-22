@@ -1,5 +1,6 @@
 package com.massive.popmovie.Views.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -42,6 +43,7 @@ import retrofit2.Response;
 public class GridFragment extends Fragment {
 
     private GridAdapter mAdapter;
+    @SuppressLint("StaticFieldLeak")
     public static RecyclerView mRecyclerView;
     GridLayoutManager layoutManager;
     private MovieApi mService;
@@ -53,20 +55,33 @@ public class GridFragment extends Fragment {
     public ArrayList<Movie> FVmovies;
     Movie movieF;
     private String LastPostiionKey = "LastPostiionKey";
-    public int scrollPosition;
+    private int scrollPosition;
+
+    public int getScrollPosition() {
+        return scrollPosition;
+    }
+
+    public void setScrollPosition(int scrollPosition) {
+        this.scrollPosition = scrollPosition;
+    }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
         setRetainInstance(true);
+        if (savedInstanceState != null)
+            scrollPosition = savedInstanceState.getInt(LastPostiionKey);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         scrollPosition = layoutManager.findFirstVisibleItemPosition();
         outState.putInt(LastPostiionKey, scrollPosition);
+        super.onSaveInstanceState(outState);
     }
 
     @Nullable
@@ -75,15 +90,15 @@ public class GridFragment extends Fragment {
         view = inflater.inflate(R.layout.grid_fragment, container, false);
         boolean cond = callfragment();
         if (cond)
-            if (savedInstanceState != null)
-                setScroll(savedInstanceState.getInt(LastPostiionKey));
+            if (scrollPosition!=-1)
+                setScroll(scrollPosition);
         return view;
     }
 
     private void setScroll(int scroll) {
         scrollPosition = scroll;
         Constant.MakeToast(getActivity(), "my value = " + scrollPosition);
-        if (scrollPosition != -1)
+        if (scrollPosition != 0)
             layoutManager.scrollToPosition(scrollPosition - 1);
     }
 

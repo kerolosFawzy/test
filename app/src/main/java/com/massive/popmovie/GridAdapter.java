@@ -37,10 +37,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(GridAdapter.ViewHolder holder, final int position) {
-//        GridFragment gridFragment = new GridFragment();
-//        if ( gridFragment.scrollPosition != 0)
-//            GridFragment.mRecyclerView.scrollToPosition(18);
-
         Glide.with(mContext)
                 .load(Constant.POSTER_URL + mMovie.get(position).getPoster_path())
                 .into(holder.imageView);
