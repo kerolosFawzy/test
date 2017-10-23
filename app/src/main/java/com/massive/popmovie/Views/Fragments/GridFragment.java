@@ -62,31 +62,37 @@ public class GridFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        parcelable = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        parcelable = layoutManager.onSaveInstanceState();
 //        scrollPosition = layoutManager.findFirstVisibleItemPosition();
         outState.putParcelable(LastPostiionKey, parcelable);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState!=null)
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(LastPostiionKey));
-//        if (savedInstanceState != null)
-//            scrollPosition = savedInstanceState.getInt(LastPostiionKey);
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null)
+            parcelable = savedInstanceState.getParcelable(LastPostiionKey);
+        //mRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(LastPostiionKey));
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (parcelable != null)
+            layoutManager.onRestoreInstanceState(parcelable);
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.grid_fragment, container, false);
-        boolean cond = callfragment();
+        callfragment();
 
         return view;
     }
@@ -98,13 +104,6 @@ public class GridFragment extends Fragment {
             mRecyclerView.smoothScrollToPosition(scrollPosition);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-       // setScroll(scrollPosition);
-
-    }
 
     private boolean callfragment() {
         if (NetworkCheck.isNetworkAvailable(getActivity()) || Flag.equals("Favourite")) {
