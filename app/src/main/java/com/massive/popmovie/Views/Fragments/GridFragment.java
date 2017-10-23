@@ -61,14 +61,12 @@ public class GridFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        //setRetainInstance(true);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         parcelable = layoutManager.onSaveInstanceState();
-//        scrollPosition = layoutManager.findFirstVisibleItemPosition();
         outState.putParcelable(LastPostiionKey, parcelable);
     }
 
@@ -77,15 +75,8 @@ public class GridFragment extends Fragment {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null)
             parcelable = savedInstanceState.getParcelable(LastPostiionKey);
-        //mRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(LastPostiionKey));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (parcelable != null)
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
-    }
 
 
     @Nullable
@@ -149,6 +140,13 @@ public class GridFragment extends Fragment {
                         }
                     });
                     mRecyclerView.setAdapter(adapter);
+
+                    mRecyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
+                        }
+                    });
 
                 }
 
