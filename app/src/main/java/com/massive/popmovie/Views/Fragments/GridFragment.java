@@ -84,7 +84,7 @@ public class GridFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (parcelable != null)
-            layoutManager.onRestoreInstanceState(parcelable);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
     }
 
 
@@ -93,7 +93,6 @@ public class GridFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.grid_fragment, container, false);
         callfragment();
-
         return view;
     }
 
