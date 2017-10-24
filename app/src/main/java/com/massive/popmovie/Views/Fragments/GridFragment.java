@@ -35,6 +35,7 @@ import com.massive.popmovie.model.MovieResponse;
 import com.massive.popmovie.Views.DetialsAcvtivty;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,7 +86,8 @@ public class GridFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        FetchFavourit();
+        if (Flag.equals( "Favourite"))
+            FetchFavourit();
     }
 
     @Nullable

@@ -54,26 +54,6 @@ public class DetailFragment extends android.app.Fragment {
     private ArrayList<Movie> FVmovies;
     private Movie movieF;
     private String Unavailable = "This video Unavailable";
-//    private Parcelable parcelable;
-//    ConstraintLayout constraintLayout;
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        try {
-//            parcelable = constraintLayout.getla.onSaveInstanceState();
-//        } catch (NullPointerException e) {
-//
-//        }
-//
-//        outState.putParcelable(LastPostiionKey, parcelable);
-//    }
-//
-//    @Override
-//    public void onViewStateRestored(Bundle savedInstanceState) {
-//        super.onViewStateRestored(savedInstanceState);
-//        if (savedInstanceState != null)
-//            parcelable = savedInstanceState.getParcelable(LastPostiionKey);
-//    }
 
     private void getDataFromCursor() {
         Cursor moviesCursor = getActivity().getContentResolver()
@@ -109,8 +89,6 @@ public class DetailFragment extends android.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.detial_fragment, container, false);
-//        constraintLayout=new ConstraintLayout(getActivity());
-//        constraintLayout=binding.constant;
         binding.setMovie(movies);
         try {
             binding.ratingBar.setRating((float) movies.getVote_average());
