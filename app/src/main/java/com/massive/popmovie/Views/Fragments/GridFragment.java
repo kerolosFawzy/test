@@ -66,7 +66,12 @@ public class GridFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        parcelable = layoutManager.onSaveInstanceState();
+        try {
+            parcelable = layoutManager.onSaveInstanceState();
+        } catch (NullPointerException e) {
+
+        }
+
         outState.putParcelable(LastPostiionKey, parcelable);
     }
 
@@ -77,7 +82,11 @@ public class GridFragment extends Fragment {
             parcelable = savedInstanceState.getParcelable(LastPostiionKey);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        FetchFavourit();
+    }
 
     @Nullable
     @Override
@@ -94,6 +103,26 @@ public class GridFragment extends Fragment {
             mRecyclerView.smoothScrollToPosition(scrollPosition);
     }
 
+    private void FetchFavourit() {
+        getDataFromCursor();
+        if (FVmovies.size() != 0) {
+            GridAdapter adapter = new GridAdapter(getActivity(), FVmovies, new ResponseCallBack() {
+                @Override
+                public void OnSuccess(Movie message) {
+                    movie = message;
+                    Intent intent = new Intent(getActivity(), DetialsAcvtivty.class);
+                    startActivity(intent);
+                }
+            });
+            mRecyclerView.setAdapter(adapter);
+            mRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
+                }
+            });
+        }
+    }
 
     private boolean callfragment() {
         if (NetworkCheck.isNetworkAvailable(getActivity()) || Flag.equals("Favourite")) {
@@ -112,24 +141,7 @@ public class GridFragment extends Fragment {
                     call = mService.getToRated(Constant.APIKEY);
                     break;
                 case "Favourite":
-                    getDataFromCursor();
-                    if (FVmovies.size() != 0) {
-                        GridAdapter adapter = new GridAdapter(getActivity(), FVmovies, new ResponseCallBack() {
-                            @Override
-                            public void OnSuccess(Movie message) {
-                                movie = message;
-                                Intent intent = new Intent(getActivity(), DetialsAcvtivty.class);
-                                startActivity(intent);
-                            }
-                        });
-                        mRecyclerView.setAdapter(adapter);
-                        mRecyclerView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
-                            }
-                        });
-                    }
+                    FetchFavourit();
                     return true;
             }
             call.enqueue(new Callback<MovieResponse>() {

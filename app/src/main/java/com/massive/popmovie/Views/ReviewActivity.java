@@ -15,6 +15,17 @@ public class ReviewActivity extends AppCompatActivity {
     private Reviews reviews;
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityReviewBinding reviewBinding = DataBindingUtil.setContentView(this, R.layout.activity_review);
