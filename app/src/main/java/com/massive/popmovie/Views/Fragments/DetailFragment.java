@@ -9,7 +9,9 @@ import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.database.DatabaseUtilsCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +43,7 @@ import retrofit2.Response;
 
 public class DetailFragment extends android.app.Fragment {
     private Movie movies = GridFragment.movie;
-    private DetialFragmentBinding binding;
+    private static DetialFragmentBinding binding;
     private Context context = getActivity();
     private ContentValues contentValues;
     private int Flag;
@@ -51,22 +53,7 @@ public class DetailFragment extends android.app.Fragment {
     private ArrayList<Movie> FVmovies;
     private Movie movieF;
     private String Unavailable = "This video Unavailable";
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private Parcelable parcelable;
 
     private void getDataFromCursor() {
         Cursor moviesCursor = getActivity().getContentResolver()
@@ -103,9 +90,8 @@ public class DetailFragment extends android.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.detial_fragment, container, false);
         binding.setMovie(movies);
-        RatingBar ratingBar = binding.ratingBar;
         try {
-            ratingBar.setRating((float) movies.getVote_average());
+            binding.ratingBar.setRating((float) movies.getVote_average());
         } catch (NullPointerException e) {
             Log.e("rating bar", e.getMessage());
         }
@@ -268,8 +254,8 @@ public class DetailFragment extends android.app.Fragment {
     }
 
     @BindingAdapter({"bind:poster_path"})
-    public  void loadImage(ImageView view, String url) {
-        Glide.with(context).load(Constant.POSTER_URL + url)
+    public static void loadImage(ImageView view, String url) {
+        Glide.with(view.getContext()).load(Constant.POSTER_URL + url)
                 .error(R.drawable.play)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(view);

@@ -123,6 +123,12 @@ public class GridFragment extends Fragment {
                             }
                         });
                         mRecyclerView.setAdapter(adapter);
+                        mRecyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRecyclerView.getLayoutManager().onRestoreInstanceState(parcelable);
+                            }
+                        });
                     }
                     return true;
             }
