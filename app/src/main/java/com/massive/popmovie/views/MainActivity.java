@@ -1,13 +1,11 @@
-package com.massive.popmovie.Views;
+package com.massive.popmovie.views;
 
 import android.app.FragmentManager;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.massive.popmovie.R;
-import com.massive.popmovie.Views.Fragments.GridFragment;
+import com.massive.popmovie.views.fragments.GridFragment;
 
 public class MainActivity extends AppCompatActivity {
     android.app.Fragment GridFragment;

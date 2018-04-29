@@ -1,15 +1,11 @@
-package com.massive.popmovie.Views.Fragments;
+package com.massive.popmovie.views.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -24,18 +20,17 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.massive.popmovie.GridAdapter;
-import com.massive.popmovie.Interfaces.ResponseCallBack;
-import com.massive.popmovie.Interfaces.MovieApi;
-import com.massive.popmovie.Network.RetrofitClient;
+import com.massive.popmovie.interfaces.MovieApi;
+import com.massive.popmovie.interfaces.ResponseCallBack;
+import com.massive.popmovie.network.RetrofitClient;
 import com.massive.popmovie.R;
-import com.massive.popmovie.Utlis.Constant;
-import com.massive.popmovie.Utlis.NetworkCheck;
+import com.massive.popmovie.utlis.Constant;
+import com.massive.popmovie.utlis.NetworkCheck;
+import com.massive.popmovie.views.DetialsAcvtivty;
 import com.massive.popmovie.model.Movie;
 import com.massive.popmovie.model.MovieResponse;
-import com.massive.popmovie.Views.DetialsAcvtivty;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,7 +67,6 @@ public class GridFragment extends Fragment {
         } catch (NullPointerException e) {
 
         }
-
         outState.putParcelable(LastPostiionKey, parcelable);
     }
 
@@ -86,7 +80,7 @@ public class GridFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Flag.equals( "Favourite"))
+        if (Flag.equals("Favourite"))
             FetchFavourit();
     }
 
@@ -96,13 +90,6 @@ public class GridFragment extends Fragment {
         view = inflater.inflate(R.layout.grid_fragment, container, false);
         callfragment();
         return view;
-    }
-
-    private void setScroll(int scroll) {
-        scrollPosition = scroll;
-        Constant.MakeToast(getActivity(), "my value = " + scrollPosition);
-        if (scrollPosition != 0)
-            mRecyclerView.smoothScrollToPosition(scrollPosition);
     }
 
     private void FetchFavourit() {

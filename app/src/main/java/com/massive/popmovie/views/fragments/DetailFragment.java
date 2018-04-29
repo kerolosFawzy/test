@@ -1,4 +1,4 @@
-package com.massive.popmovie.Views.Fragments;
+package com.massive.popmovie.views.fragments;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
@@ -9,31 +9,27 @@ import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.database.DatabaseUtilsCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.massive.popmovie.Interfaces.MovieApi;
-import com.massive.popmovie.Network.RetrofitClient;
+import com.massive.popmovie.interfaces.MovieApi;
+import com.massive.popmovie.network.RetrofitClient;
 import com.massive.popmovie.R;
-import com.massive.popmovie.Utlis.Constant;
-import com.massive.popmovie.Utlis.NetworkCheck;
+import com.massive.popmovie.utlis.Constant;
+import com.massive.popmovie.utlis.NetworkCheck;
+import com.massive.popmovie.views.ReviewActivity;
 import com.massive.popmovie.databinding.DetialFragmentBinding;
 import com.massive.popmovie.model.Movie;
 import com.massive.popmovie.model.Reviews;
 import com.massive.popmovie.model.Trailer;
 import com.massive.popmovie.model.TrailerResponse;
 import com.massive.popmovie.model.reviewsResponse;
-import com.massive.popmovie.Views.ReviewActivity;
 
 import java.util.ArrayList;
 

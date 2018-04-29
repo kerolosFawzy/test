@@ -1,10 +1,10 @@
-package com.massive.popmovie.DataBase;
+package com.massive.popmovie.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.massive.popmovie.Utlis.Constant;
+import com.massive.popmovie.utlis.Constant;
 
 
 public class SqliteHelperClass extends SQLiteOpenHelper {

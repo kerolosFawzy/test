@@ -4,4 +4,7 @@
     <string name="RemoveButton">Remove From Favourit</string>
     <string name="AddButton">Add To Favourit</string>
     <string name="click_review">Click here to see the review</string>
+    <string name="trailer_1">trailer 1</string>
+    <string name="trailer_2">trailer 2</string>
+    <string name="trailer_3">trailer 3</string>
 </resources>

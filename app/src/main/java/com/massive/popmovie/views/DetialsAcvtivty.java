@@ -1,13 +1,11 @@
-package com.massive.popmovie.Views;
+package com.massive.popmovie.views;
 
-import android.app.FragmentManager;
+import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.massive.popmovie.R;
-import com.massive.popmovie.Views.Fragments.DetailFragment;
-import com.massive.popmovie.Views.Fragments.GridFragment;
+import com.massive.popmovie.views.fragments.DetailFragment;
 
 public class DetialsAcvtivty extends AppCompatActivity {
     private static final String TAG_RETAINED_FRAGMENT = "DetailFragment";

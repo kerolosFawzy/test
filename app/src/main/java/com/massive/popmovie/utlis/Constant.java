@@ -1,4 +1,4 @@
-package com.massive.popmovie.Utlis;
+package com.massive.popmovie.utlis;
 
 import android.content.Context;
 import android.net.Uri;

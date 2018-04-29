@@ -1,12 +1,10 @@
-package com.massive.popmovie.Interfaces;
+package com.massive.popmovie.interfaces;
 
 import com.massive.popmovie.model.MovieResponse;
 import com.massive.popmovie.model.TrailerResponse;
 import com.massive.popmovie.model.reviewsResponse;
 
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;

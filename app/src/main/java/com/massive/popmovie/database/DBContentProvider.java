@@ -1,4 +1,4 @@
-package com.massive.popmovie.DataBase;
+package com.massive.popmovie.database;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.massive.popmovie.Utlis.Constant;
+import com.massive.popmovie.utlis.Constant;
 
 /**
  * Created by minafaw on 10/10/2017.

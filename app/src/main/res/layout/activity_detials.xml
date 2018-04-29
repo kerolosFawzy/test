@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/DetialContainer"
-    tools:context="com.massive.popmovie.Views.DetialsAcvtivty">
+    tools:context="com.massive.popmovie.views.DetialsAcvtivty">
 
 </android.support.constraint.ConstraintLayout>

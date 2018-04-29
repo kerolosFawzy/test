@@ -16,7 +16,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/constant_scroll"
         >
 
@@ -155,7 +155,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="trailer 1"
+                    android:text="@string/trailer_1"
                     android:textColor="@android:color/black"
                     android:textSize="24sp" />
 
@@ -190,7 +190,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="trailer 2"
+                    android:text="@string/trailer_2"
                     android:textColor="@android:color/black"
                     android:textSize="24sp" />
 
@@ -225,7 +225,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="trailer 3"
+                    android:text="@string/trailer_3"
                     android:textColor="@android:color/black"
                     android:textSize="24sp" />
 
